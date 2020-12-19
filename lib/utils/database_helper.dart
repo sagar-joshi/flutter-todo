@@ -13,6 +13,7 @@ class DatabaseHelper {
   String colTitle = 'title';
   String colText = 'text';
   String colDate = 'date';
+  String colDone = 'done';
 
   DatabaseHelper._createInstance(); //named constructor to create instance of database
 
@@ -40,7 +41,7 @@ class DatabaseHelper {
 
   void _createDb(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE $notesTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colText TEXT, $colDate TEXT)');
+        'CREATE TABLE $notesTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colText TEXT, $colDate TEXT, $colDone BOOLEAN NOT NULL)');
   }
 
   //crud
@@ -60,7 +61,8 @@ class DatabaseHelper {
             noteMapList[index]['id'],
             noteMapList[index]['title'],
             noteMapList[index]['text'],
-            noteMapList[index]['date']));
+            noteMapList[index]['date'],
+            noteMapList[index]['done']));
     return noteList;
   }
 

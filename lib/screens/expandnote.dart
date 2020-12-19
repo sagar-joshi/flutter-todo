@@ -3,7 +3,8 @@ import 'package:notes/models/note.dart';
 
 class ExpandNote extends StatelessWidget {
   final Note note;
-  ExpandNote(this.note);
+  final Color cardColor;
+  ExpandNote(this.note, this.cardColor);
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +15,9 @@ class ExpandNote extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: Card(
-              color: Colors.white70,
+              color: this.cardColor,
               child: ListTile(
-                title: Text(note.title, style: TextStyle(fontSize: 30)),
+                title: Text(note.title, style: TextStyle(fontSize: 25)),
                 subtitle: Text(
                   ('\n' + note.text + '\n\n' + note.date),
                   style: TextStyle(fontSize: 18),

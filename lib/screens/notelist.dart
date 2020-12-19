@@ -69,12 +69,31 @@ class _NoteListState extends State<NoteList> {
   }
 
   String trimText(String text) {
-    if (text.contains('\n')) {
+    if (text.contains('\n') && text.indexOf('\n') <= 28) {
       return (text.substring(0, text.indexOf('\n')) + "...");
-    } else if (text.length > 25)
-      return (text.substring(0, 25) + "...");
+    } else if (text.length > 28)
+      return (text.substring(0, 28) + "...");
     else
       return text.toString();
+  }
+
+  TextDecoration getTextDecoration(int index) {
+    if (this.noteList[index].done == 1)
+      return TextDecoration.lineThrough;
+    else
+      return TextDecoration.none;
+  }
+
+  void updateCheckBox(Note note) async {
+    await dbHelper.updateNote(note);
+    updateListView();
+  }
+
+  Color getCardColor(int index) {
+    if (noteList[index].done == 1)
+      return Colors.greenAccent[400];
+    else
+      return Colors.amber[400];
   }
 
   @override
@@ -85,23 +104,38 @@ class _NoteListState extends State<NoteList> {
     }
     return Container(
         child: Scaffold(
-      appBar: AppBar(title: Text("Notes")),
+      appBar: AppBar(
+        title: Text("Notes"),
+        backgroundColor: primaryColor,
+      ),
       body: Container(
         child: ListView.builder(
           itemCount: notesCount,
           itemBuilder: (context, index) {
             return Card(
-              color: secondaryColor,
+              margin: EdgeInsets.all(10.0),
+              elevation: 10.0,
+              color: getCardColor(index),
+              shadowColor: primaryColor,
               child: ListTile(
-                horizontalTitleGap: 2.0,
+                contentPadding: EdgeInsets.all(0),
+                hoverColor: getCardColor(index),
+                horizontalTitleGap: 0,
                 isThreeLine: true,
-                leading: Icon(
-                  Icons.note,
-                  color: Colors.amber,
+                leading: Checkbox(
+                  value: this.noteList[index].done == 0 ? false : true,
+                  onChanged: (value) {
+                    this.noteList[index].done =
+                        this.noteList[index].done == 0 ? 1 : 0;
+                    updateCheckBox(this.noteList[index]);
+                  },
                 ),
                 title: Text(
                   trimTitle(this.noteList[index].title),
-                  style: TextStyle(fontSize: 20.0),
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      decoration: getTextDecoration(index),
+                      decorationThickness: 2),
                 ),
                 subtitle: Text(trimText(this.noteList[index].text) +
                     '\n\n' +
@@ -112,7 +146,7 @@ class _NoteListState extends State<NoteList> {
                       highlightColor: primaryColor,
                       icon: Icon(
                         Icons.edit,
-                        color: primaryColor,
+                        color: Colors.blue,
                       ),
                       onPressed: () async {
                         final bool result = await Navigator.push(context,
@@ -121,7 +155,8 @@ class _NoteListState extends State<NoteList> {
                               noteList[index].id,
                               noteList[index].title,
                               noteList[index].text,
-                              noteList[index].date));
+                              noteList[index].date,
+                              noteList[index].done));
                         }));
                         if (result) {
                           updateListView();
@@ -142,8 +177,10 @@ class _NoteListState extends State<NoteList> {
                 ),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ExpandNote(Note(noteList[index].title,
-                        noteList[index].text, noteList[index].date));
+                    return ExpandNote(
+                        Note(noteList[index].title, noteList[index].text,
+                            noteList[index].date),
+                        getCardColor(index));
                   }));
                 },
               ),
@@ -152,6 +189,7 @@ class _NoteListState extends State<NoteList> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryColor,
         onPressed: () async {
           final bool result = await Navigator.push(context,
               MaterialPageRoute(builder: (context) {
