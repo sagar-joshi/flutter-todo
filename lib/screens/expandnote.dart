@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:notes/models/note.dart';
+import 'package:notes/utils/color_scheme.dart';
 
 class ExpandNote extends StatelessWidget {
   final Note note;
-  final Color cardColor;
-  ExpandNote(this.note, this.cardColor);
+  ExpandNote(this.note);
 
   @override
   Widget build(BuildContext context) {
@@ -13,16 +13,27 @@ class ExpandNote extends StatelessWidget {
         appBar: AppBar(
           title: Text('Note'),
         ),
-        body: SingleChildScrollView(
-          child: Card(
-              color: this.cardColor,
-              child: ListTile(
-                title: Text(note.title, style: TextStyle(fontSize: 25)),
-                subtitle: Text(
-                  ('\n' + note.text + '\n\n' + note.date),
-                  style: TextStyle(fontSize: 18),
-                ),
-              )),
+        body: Card(
+          shadowColor: primaryColor,
+          color: secondaryColor,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Card(
+                  elevation: 5,
+                  shadowColor: primaryColor,
+                  color: secondaryColor,
+                  child: ListTile(
+                    title: Text(note.title,
+                        style: TextStyle(
+                            fontSize: 25,
+                            decoration: TextDecoration.underline)),
+                    subtitle: Text(
+                      ('\n' + note.text + '\n\n' + note.date),
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  )),
+            ),
+          ),
         ),
       ),
     );

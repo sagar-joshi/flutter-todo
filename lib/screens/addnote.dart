@@ -50,35 +50,38 @@ class _AddNoteState extends State<AddNote> {
         title: Text("Add Note"),
       ),
       body: Container(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  initialValue: newNote.title,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelText: 'Title',
-                    hintText: 'Enter title here',
-                    labelStyle: TextStyle(color: primaryColor),
-                    hintStyle: TextStyle(color: primaryColor),
+        child: Card(
+          color: secondaryColor,
+          shadowColor: primaryColor,
+          elevation: 5.0,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    initialValue: newNote.title,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      labelText: 'Title',
+                      hintText: 'Enter title here',
+                      labelStyle: TextStyle(color: primaryColor),
+                      hintStyle: TextStyle(color: primaryColor),
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'This field can not be empty';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      updateTitle(value);
+                    },
                   ),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'This field can not be empty';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    updateTitle(value);
-                  },
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Expanded(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     initialValue: newNote.text,
                     keyboardType: TextInputType.multiline,
@@ -100,19 +103,19 @@ class _AddNoteState extends State<AddNote> {
                     },
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      await saveNote(context);
-                    }
-                  },
-                  child: Text('Save'),
-                ),
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
+                        await saveNote(context);
+                      }
+                    },
+                    child: Text('Save'),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

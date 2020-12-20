@@ -91,9 +91,9 @@ class _NoteListState extends State<NoteList> {
 
   Color getCardColor(int index) {
     if (noteList[index].done == 1)
-      return Colors.greenAccent[400];
+      return Colors.green[100];
     else
-      return Colors.amber[400];
+      return Colors.amber[100];
   }
 
   @override
@@ -114,12 +114,12 @@ class _NoteListState extends State<NoteList> {
           itemBuilder: (context, index) {
             return Card(
               margin: EdgeInsets.all(10.0),
-              elevation: 10.0,
-              color: getCardColor(index),
+              elevation: 5.0,
+              color: secondaryColor,
               shadowColor: primaryColor,
               child: ListTile(
                 contentPadding: EdgeInsets.all(0),
-                hoverColor: getCardColor(index),
+                selectedTileColor: Colors.red,
                 horizontalTitleGap: 0,
                 isThreeLine: true,
                 leading: Checkbox(
@@ -133,6 +133,7 @@ class _NoteListState extends State<NoteList> {
                 title: Text(
                   trimTitle(this.noteList[index].title),
                   style: TextStyle(
+                      backgroundColor: getCardColor(index),
                       fontSize: 20.0,
                       decoration: getTextDecoration(index),
                       decorationThickness: 2),
@@ -177,10 +178,8 @@ class _NoteListState extends State<NoteList> {
                 ),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ExpandNote(
-                        Note(noteList[index].title, noteList[index].text,
-                            noteList[index].date),
-                        getCardColor(index));
+                    return ExpandNote(Note(noteList[index].title,
+                        noteList[index].text, noteList[index].date));
                   }));
                 },
               ),
