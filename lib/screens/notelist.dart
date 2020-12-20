@@ -69,10 +69,10 @@ class _NoteListState extends State<NoteList> {
   }
 
   String trimText(String text) {
-    if (text.contains('\n') && text.indexOf('\n') <= 28) {
+    if (text.contains('\n') && text.indexOf('\n') <= 35) {
       return (text.substring(0, text.indexOf('\n')) + "...");
-    } else if (text.length > 28)
-      return (text.substring(0, 28) + "...");
+    } else if (text.length > 35)
+      return (text.substring(0, 35) + "...");
     else
       return text.toString();
   }
@@ -112,93 +112,113 @@ class _NoteListState extends State<NoteList> {
         child: ListView.builder(
           itemCount: notesCount,
           itemBuilder: (context, index) {
-            return Card(
-              margin: EdgeInsets.all(10.0),
-              elevation: 5.0,
-              color: secondaryColor,
-              shadowColor: primaryColor,
-              child: ListTile(
-                contentPadding: EdgeInsets.all(0),
-                selectedTileColor: Colors.red,
-                horizontalTitleGap: 0,
-                isThreeLine: true,
-                leading: Checkbox(
-                  value: this.noteList[index].done == 0 ? false : true,
-                  onChanged: (value) {
-                    this.noteList[index].done =
-                        this.noteList[index].done == 0 ? 1 : 0;
-                    updateCheckBox(this.noteList[index]);
-                  },
-                ),
-                title: Text(
-                  trimTitle(this.noteList[index].title),
-                  style: TextStyle(
-                      backgroundColor: getCardColor(index),
-                      fontSize: 20.0,
-                      decoration: getTextDecoration(index),
-                      decorationThickness: 2),
-                ),
-                subtitle: Text(trimText(this.noteList[index].text) +
-                    '\n\n' +
-                    this.noteList[index].date.toString()),
-                trailing: Wrap(
+            return Dismissible(
+              key: Key(noteList[index].id.toString()),
+              background: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      highlightColor: primaryColor,
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.blue,
-                      ),
-                      onPressed: () async {
-                        final bool result = await Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return AddNote(Note.withId(
-                              noteList[index].id,
-                              noteList[index].title,
-                              noteList[index].text,
-                              noteList[index].date,
-                              noteList[index].done));
-                        }));
-                        if (result) {
-                          updateListView();
-                        }
-                      },
-                    ),
-                    IconButton(
-                      highlightColor: warnColor,
-                      icon: Icon(
+                    Container(
+                      padding: EdgeInsets.only(left: 15.0),
+                      child: Icon(
                         Icons.delete,
-                        color: warnColor,
+                        color: Colors.white,
                       ),
-                      onPressed: () {
-                        _delete(context, noteList[index]);
-                      },
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      alignment: Alignment.centerRight,
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
                     )
                   ],
                 ),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ExpandNote(Note(noteList[index].title,
-                        noteList[index].text, noteList[index].date));
-                  }));
-                },
+                color: warnColor,
+                alignment: Alignment.centerLeft,
+              ),
+              onDismissed: (dir) {
+                _delete(context, noteList[index]);
+              },
+              child: Card(
+                margin: EdgeInsets.all(3.0),
+                elevation: 5.0,
+                color: secondaryColor,
+                shadowColor: primaryColor,
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(0.0),
+                  selectedTileColor: Colors.red,
+                  horizontalTitleGap: 0,
+                  isThreeLine: true,
+                  leading: Checkbox(
+                    value: this.noteList[index].done == 0 ? false : true,
+                    onChanged: (value) {
+                      this.noteList[index].done =
+                          this.noteList[index].done == 0 ? 1 : 0;
+                      updateCheckBox(this.noteList[index]);
+                    },
+                  ),
+                  title: Text(
+                    trimTitle(this.noteList[index].title),
+                    style: TextStyle(
+                        backgroundColor: getCardColor(index),
+                        fontSize: 20.0,
+                        decoration: getTextDecoration(index),
+                        decorationThickness: 2),
+                  ),
+                  subtitle: Text(trimText(this.noteList[index].text) +
+                      '\n\n' +
+                      this.noteList[index].date.toString()),
+                  trailing: IconButton(
+                    highlightColor: primaryColor,
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.blue,
+                    ),
+                    onPressed: () async {
+                      final result = await Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return AddNote(Note.withId(
+                            noteList[index].id,
+                            noteList[index].title,
+                            noteList[index].text,
+                            noteList[index].date,
+                            noteList[index].done));
+                      }));
+                      if (result != null) {
+                        updateListView();
+                      }
+                    },
+                  ),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return ExpandNote(Note(noteList[index].title,
+                          noteList[index].text, noteList[index].date));
+                    }));
+                  },
+                ),
               ),
             );
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: primaryColor,
-        onPressed: () async {
-          final bool result = await Navigator.push(context,
-              MaterialPageRoute(builder: (context) {
-            return AddNote(Note.withId(null, '', '', ''));
-          }));
-          if (result) {
-            updateListView();
-          }
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(bottom: 20.0),
+        child: FloatingActionButton(
+          backgroundColor: primaryColor,
+          onPressed: () async {
+            final result = await Navigator.push(context,
+                MaterialPageRoute(builder: (context) {
+              return AddNote(Note.withId(null, '', '', ''));
+            }));
+            if (result != null) {
+              updateListView();
+            }
+          },
+          child: Icon(Icons.add),
+        ),
       ),
     ));
   }
