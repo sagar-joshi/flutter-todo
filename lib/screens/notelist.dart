@@ -20,8 +20,7 @@ class _NoteListState extends State<NoteList> {
   List<Note> noteList;
   int notesCount = 0;
 
-  void afterDeleteSnackBar(
-      BuildContext context, String message, Note note) async {
+  void afterDeleteSnackBar(BuildContext context, String message, Note note) {
     final snackBar = SnackBar(
       content: Text(message),
       action: SnackBarAction(
