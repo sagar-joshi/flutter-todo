@@ -88,13 +88,6 @@ class _NoteListState extends State<NoteList> {
     updateListView();
   }
 
-  Color getCardColor(int index) {
-    if (noteList[index].done == 1)
-      return Colors.green[100];
-    else
-      return Colors.amber[100];
-  }
-
   @override
   Widget build(BuildContext context) {
     if (noteList == null) {
@@ -105,7 +98,7 @@ class _NoteListState extends State<NoteList> {
         child: Scaffold(
       appBar: AppBar(
         title: Text("Notes"),
-        backgroundColor: primaryColor,
+        backgroundColor: palette.primary,
       ),
       body: Container(
         child: ListView.builder(
@@ -121,7 +114,7 @@ class _NoteListState extends State<NoteList> {
                       padding: EdgeInsets.only(left: 15.0),
                       child: Icon(
                         Icons.delete,
-                        color: Colors.white,
+                        color: palette.onWarn,
                       ),
                     ),
                     Container(
@@ -129,12 +122,12 @@ class _NoteListState extends State<NoteList> {
                       alignment: Alignment.centerRight,
                       child: Icon(
                         Icons.delete,
-                        color: Colors.white,
+                        color: palette.onWarn,
                       ),
                     )
                   ],
                 ),
-                color: warnColor,
+                color: palette.warn,
                 alignment: Alignment.centerLeft,
               ),
               onDismissed: (dir) {
@@ -143,11 +136,10 @@ class _NoteListState extends State<NoteList> {
               child: Card(
                 margin: EdgeInsets.all(3.0),
                 elevation: 5.0,
-                color: secondaryColor,
-                shadowColor: primaryColor,
+                color: palette.surface,
+                shadowColor: palette.primary,
                 child: ListTile(
                   contentPadding: EdgeInsets.all(0.0),
-                  selectedTileColor: Colors.red,
                   horizontalTitleGap: 0,
                   isThreeLine: true,
                   leading: Checkbox(
@@ -161,7 +153,6 @@ class _NoteListState extends State<NoteList> {
                   title: Text(
                     trimTitle(this.noteList[index].title),
                     style: TextStyle(
-                        backgroundColor: getCardColor(index),
                         fontSize: 20.0,
                         decoration: getTextDecoration(index),
                         decorationThickness: 2),
@@ -170,10 +161,10 @@ class _NoteListState extends State<NoteList> {
                       '\n\n' +
                       this.noteList[index].date.toString()),
                   trailing: IconButton(
-                    highlightColor: primaryColor,
+                    highlightColor: palette.primary,
                     icon: Icon(
                       Icons.edit,
-                      color: Colors.blue,
+                      color: palette.primary,
                     ),
                     onPressed: () async {
                       final result = await Navigator.push(context,
@@ -206,7 +197,7 @@ class _NoteListState extends State<NoteList> {
       floatingActionButton: Container(
         margin: EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
-          backgroundColor: primaryColor,
+          backgroundColor: palette.primary,
           onPressed: () async {
             final result = await Navigator.push(context,
                 MaterialPageRoute(builder: (context) {

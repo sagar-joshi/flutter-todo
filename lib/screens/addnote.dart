@@ -51,8 +51,8 @@ class _AddNoteState extends State<AddNote> {
       ),
       body: Container(
         child: Card(
-          color: secondaryColor,
-          shadowColor: primaryColor,
+          color: palette.surface,
+          shadowColor: palette.primary,
           elevation: 5.0,
           child: Form(
             key: _formKey,
@@ -66,8 +66,8 @@ class _AddNoteState extends State<AddNote> {
                     decoration: InputDecoration(
                       labelText: 'Title',
                       hintText: 'Enter title here',
-                      labelStyle: TextStyle(color: primaryColor),
-                      hintStyle: TextStyle(color: primaryColor),
+                      labelStyle: TextStyle(color: palette.primary),
+                      hintStyle: TextStyle(color: palette.primary),
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
@@ -88,8 +88,8 @@ class _AddNoteState extends State<AddNote> {
                     maxLines: 6,
                     decoration: InputDecoration(
                       labelText: 'Text',
-                      labelStyle: TextStyle(color: primaryColor),
-                      hintStyle: TextStyle(color: primaryColor),
+                      labelStyle: TextStyle(color: palette.primary),
+                      hintStyle: TextStyle(color: palette.primary),
                       hintText: 'Enter text here',
                     ),
                     validator: (value) {

@@ -14,14 +14,14 @@ class ExpandNote extends StatelessWidget {
           title: Text('Note'),
         ),
         body: Card(
-          shadowColor: primaryColor,
-          color: secondaryColor,
+          shadowColor: palette.primary,
+          color: palette.surface,
           child: Center(
             child: SingleChildScrollView(
               child: Card(
                   elevation: 5,
-                  shadowColor: primaryColor,
-                  color: secondaryColor,
+                  shadowColor: palette.primary,
+                  color: palette.surface,
                   child: ListTile(
                     title: Text(note.title,
                         style: TextStyle(
