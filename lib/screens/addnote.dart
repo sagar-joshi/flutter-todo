@@ -93,8 +93,10 @@ class _AddNoteState extends State<AddNote> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    minLines: 1,
+                    maxLines: 2,
                     initialValue: newNote.title,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       labelText: 'Title',
                       hintText: 'Enter title here',
@@ -115,21 +117,16 @@ class _AddNoteState extends State<AddNote> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    minLines: 1,
+                    maxLines: 5,
                     initialValue: newNote.text,
                     keyboardType: TextInputType.multiline,
-                    maxLines: 6,
                     decoration: InputDecoration(
                       labelText: 'Text',
                       labelStyle: TextStyle(color: palette.primary),
                       hintStyle: TextStyle(color: palette.primary),
                       hintText: 'Enter text here',
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'This field can not be empty';
-                      }
-                      return null;
-                    },
                     onChanged: (value) {
                       updateText(value);
                     },
