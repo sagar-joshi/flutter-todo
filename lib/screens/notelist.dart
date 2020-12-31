@@ -72,10 +72,10 @@ class _NoteListState extends State<NoteList> {
   }
 
   String trimText(String text) {
-    if (text.contains('\n') && text.indexOf('\n') <= 35) {
+    if (text.contains('\n') && text.indexOf('\n') <= 30) {
       return (text.substring(0, text.indexOf('\n')) + "...");
-    } else if (text.length > 35)
-      return (text.substring(0, 35) + "...");
+    } else if (text.length > 30)
+      return (text.substring(0, 30) + "...");
     else
       return text.toString();
   }
@@ -111,36 +111,26 @@ class _NoteListState extends State<NoteList> {
             return Dismissible(
               key: Key(noteList[index].id.toString()),
               background: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 15.0),
-                      child: Icon(
-                        Icons.delete,
-                        color: palette.onWarn,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(right: 15.0),
-                      alignment: Alignment.centerRight,
-                      child: Icon(
-                        Icons.delete,
-                        color: palette.onWarn,
-                      ),
-                    )
-                  ],
-                ),
-                color: palette.warn,
                 alignment: Alignment.centerLeft,
+                color: palette.warn,
+                padding: EdgeInsets.only(left: 15.0),
+                child: Icon(
+                  Icons.delete,
+                  color: palette.onWarn,
+                ),
+              ),
+              secondaryBackground: Container(
+                alignment: Alignment.centerRight,
+                color: palette.warn,
+                padding: EdgeInsets.only(right: 15.0),
+                child: Icon(Icons.delete, color: palette.onWarn),
               ),
               onDismissed: (dir) {
                 _delete(context, noteList[index]);
               },
               child: Card(
-                margin: EdgeInsets.all(3.0),
+                margin: EdgeInsets.all(15.0),
                 elevation: 5.0,
-                color: palette.surface,
                 shadowColor: palette.primary,
                 child: ListTile(
                   contentPadding: EdgeInsets.all(0.0),
