@@ -101,10 +101,14 @@ class _NoteListState extends State<NoteList> {
     return Container(
         child: Scaffold(
       appBar: AppBar(
-        title: Text("Notes"),
-        backgroundColor: palette.primary,
+        title: Text(
+          "Notes",
+          style: TextStyle(color: palette.onBars),
+        ),
+        backgroundColor: palette.bars,
       ),
       body: Container(
+        color: palette.background,
         child: ListView.builder(
           itemCount: notesCount,
           itemBuilder: (context, index) {
@@ -131,6 +135,7 @@ class _NoteListState extends State<NoteList> {
               child: Card(
                 margin: EdgeInsets.all(15.0),
                 elevation: 5.0,
+                color: palette.surface,
                 shadowColor: palette.primary,
                 child: ListTile(
                   contentPadding: EdgeInsets.all(0.0),
@@ -147,13 +152,17 @@ class _NoteListState extends State<NoteList> {
                   title: Text(
                     trimTitle(this.noteList[index].title),
                     style: TextStyle(
+                        color: palette.onSurface,
                         fontSize: 20.0,
                         decoration: getTextDecoration(index),
                         decorationThickness: 2),
                   ),
-                  subtitle: Text(trimText(this.noteList[index].text) +
-                      '\n\n' +
-                      this.noteList[index].date.toString()),
+                  subtitle: Text(
+                    trimText(this.noteList[index].text) +
+                        '\n\n' +
+                        this.noteList[index].date.toString(),
+                    style: TextStyle(color: palette.onSurface),
+                  ),
                   trailing: IconButton(
                     highlightColor: palette.primary,
                     icon: Icon(
@@ -195,7 +204,7 @@ class _NoteListState extends State<NoteList> {
       floatingActionButton: Container(
         margin: EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
-          backgroundColor: palette.primary,
+          backgroundColor: palette.bars,
           onPressed: () async {
             final result = await Navigator.push(context,
                 MaterialPageRoute(builder: (context) {
@@ -205,7 +214,10 @@ class _NoteListState extends State<NoteList> {
               updateListView();
             }
           },
-          child: Icon(Icons.add),
+          child: Icon(
+            Icons.add,
+            color: palette.onBars,
+          ),
         ),
       ),
     ));

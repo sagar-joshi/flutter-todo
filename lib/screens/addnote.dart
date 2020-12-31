@@ -50,8 +50,10 @@ class _AddNoteState extends State<AddNote> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: palette.background,
       appBar: AppBar(
         title: Text("Add Note"),
+        backgroundColor: palette.bars,
       ),
       body: Container(
         child: SingleChildScrollView(
@@ -68,9 +70,12 @@ class _AddNoteState extends State<AddNote> {
                               TextStyle(color: palette.primary, fontSize: 20.0),
                         ),
                       )
-                    : Padding(
+                    : Container(
+                        color: palette.surface,
                         padding: const EdgeInsets.all(8.0),
+                        margin: EdgeInsets.all(8.0),
                         child: TextFormField(
+                          style: TextStyle(color: palette.onSurface),
                           initialValue: newNote.category,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
@@ -90,9 +95,12 @@ class _AddNoteState extends State<AddNote> {
                           },
                         ),
                       ),
-                Padding(
+                Container(
+                  color: palette.surface,
                   padding: const EdgeInsets.all(8.0),
+                  margin: EdgeInsets.all(8.0),
                   child: TextFormField(
+                    style: TextStyle(color: palette.onSurface),
                     minLines: 1,
                     maxLines: 2,
                     initialValue: newNote.title,
@@ -114,9 +122,12 @@ class _AddNoteState extends State<AddNote> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                Container(
+                  color: palette.surface,
+                  padding: EdgeInsets.all(8.0),
+                  margin: EdgeInsets.all(8.0),
                   child: TextFormField(
+                    style: TextStyle(color: palette.onSurface),
                     minLines: 1,
                     maxLines: 5,
                     initialValue: newNote.text,
