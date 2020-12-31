@@ -14,6 +14,7 @@ class DatabaseHelper {
   String colText = 'text';
   String colDate = 'date';
   String colDone = 'done';
+  String colCategory = 'category';
 
   DatabaseHelper._createInstance(); //named constructor to create instance of database
 
@@ -41,29 +42,47 @@ class DatabaseHelper {
 
   void _createDb(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE $notesTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colText TEXT, $colDate TEXT, $colDone BOOLEAN NOT NULL)');
+        'CREATE TABLE $notesTable($colId INTEGER PRIMARY KEY AUTOINCREMENT,$colCategory TEXT, $colTitle TEXT, $colText TEXT, $colDate TEXT, $colDone BOOLEAN NOT NULL)');
   }
 
   //crud
 
   //fetch
-  Future<List<Map<String, dynamic>>> getNoteListMap() async {
+  Future<List<Map<String, dynamic>>> getNoteListMap(String category) async {
     Database db = await this.database;
-    var result = await db.query(notesTable, orderBy: '$colDone,$colDate DESC');
+    var result = await db.query(notesTable,
+        orderBy: '$colDone,$colDate DESC',
+        where: '$colCategory = ?',
+        whereArgs: [category]);
     return result;
   }
 
-  Future<List<Note>> getNoteList() async {
-    List<Map<String, dynamic>> noteMapList = await getNoteListMap();
+  Future<List<Map<String, dynamic>>> getCategoryListMap() async {
+    Database db = await this.database;
+    var result =
+        await db.query(notesTable, columns: ['$colCategory'], distinct: true);
+    return result;
+  }
+
+  Future<List<Note>> getNoteListForCategory(String category) async {
+    List<Map<String, dynamic>> noteListMap = await getNoteListMap(category);
     List<Note> noteList = List<Note>.generate(
-        noteMapList.length,
+        noteListMap.length,
         (index) => Note.withId(
-            noteMapList[index]['id'],
-            noteMapList[index]['title'],
-            noteMapList[index]['text'],
-            noteMapList[index]['date'],
-            noteMapList[index]['done']));
+            noteListMap[index]['id'],
+            noteListMap[index]['category'],
+            noteListMap[index]['title'],
+            noteListMap[index]['text'],
+            noteListMap[index]['date'],
+            noteListMap[index]['done']));
     return noteList;
+  }
+
+  Future<List<String>> getCategoryList() async {
+    List<Map<String, dynamic>> categoryListMap = await getCategoryListMap();
+    List<String> categoryList = List<String>.generate(
+        categoryListMap.length, (index) => categoryListMap[index]['category']);
+    return categoryList;
   }
 
   //insert

@@ -13,26 +13,21 @@ class ExpandNote extends StatelessWidget {
         appBar: AppBar(
           title: Text('Note'),
         ),
-        body: Card(
-          shadowColor: palette.primary,
-          color: palette.surface,
-          child: Center(
-            child: SingleChildScrollView(
-              child: Card(
-                  elevation: 5,
-                  shadowColor: palette.primary,
-                  color: palette.surface,
-                  child: ListTile(
-                    title: Text(note.title,
-                        style: TextStyle(
-                            fontSize: 25,
-                            decoration: TextDecoration.underline)),
-                    subtitle: Text(
-                      ('\n' + note.text + '\n\n' + note.date),
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  )),
-            ),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Card(
+                elevation: 5,
+                shadowColor: palette.primary,
+                color: palette.surface,
+                child: ListTile(
+                  title: Text(note.title,
+                      style: TextStyle(
+                          fontSize: 25, decoration: TextDecoration.underline)),
+                  subtitle: Text(
+                    ('\n' + note.text + '\n\n' + note.date),
+                    style: TextStyle(fontSize: 18),
+                  ),
+                )),
           ),
         ),
       ),

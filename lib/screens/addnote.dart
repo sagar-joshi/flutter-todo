@@ -18,6 +18,10 @@ class _AddNoteState extends State<AddNote> {
   final _formKey = GlobalKey<FormState>();
   DatabaseHelper dbHelper = DatabaseHelper();
 
+  void updateCategory(String category) {
+    newNote.category = category;
+  }
+
   void updateTitle(String title) {
     newNote.title = title;
   }
@@ -50,14 +54,42 @@ class _AddNoteState extends State<AddNote> {
         title: Text("Add Note"),
       ),
       body: Container(
-        child: Card(
-          color: palette.surface,
-          shadowColor: palette.primary,
-          elevation: 5.0,
+        child: SingleChildScrollView(
           child: Form(
             key: _formKey,
             child: Column(
               children: [
+                newNote.category != ""
+                    ? Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "${newNote.category}",
+                          style:
+                              TextStyle(color: palette.primary, fontSize: 20.0),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          initialValue: newNote.category,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: 'Category',
+                            hintText: 'Enter category here',
+                            labelStyle: TextStyle(color: palette.primary),
+                            hintStyle: TextStyle(color: palette.primary),
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'This field can not be empty';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            updateCategory(value);
+                          },
+                        ),
+                      ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(

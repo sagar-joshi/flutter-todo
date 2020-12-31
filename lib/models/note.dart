@@ -1,21 +1,28 @@
 class Note {
   int _id;
+  String _category;
   String _title;
   String _text;
   String _date;
   int _done;
 
-  Note(this._title, this._text, this._date, [this._done = 0]);
-  Note.withId(this._id, this._title, this._text, this._date, [this._done = 0]);
+  Note(this._category, this._title, this._text, this._date, [this._done = 0]);
+  Note.withId(this._id, this._category, this._title, this._text, this._date,
+      [this._done = 0]);
 
   //getters
   int get id => _id;
+  String get category => _category;
   String get title => _title;
   String get text => _text;
   String get date => _date;
   int get done => _done;
 
   //setters
+  set category(String newCategory) {
+    this._category = newCategory;
+  }
+
   set title(String newTitle) {
     if (newTitle.length <= 255) {
       this._title = newTitle;
@@ -50,6 +57,7 @@ class Note {
     map['text'] = _text;
     map['date'] = _date;
     map['done'] = _done;
+    map['category'] = _category;
 
     return map;
   }
@@ -61,5 +69,6 @@ class Note {
     this._text = map['text'];
     this._date = map['date'];
     this._done = map['done'];
+    this._category = map['category'];
   }
 }

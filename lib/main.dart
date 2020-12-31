@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notes/screens/notelist.dart';
+import 'package:notes/screens/categorygrid.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: MaterialApp(
-          debugShowCheckedModeBanner: false, title: "Notes", home: NoteList()),
+          debugShowCheckedModeBanner: false,
+          title: "Notes",
+          home: CategoryGridView()),
     );
   }
 }

@@ -9,13 +9,16 @@ import 'package:notes/utils/color_scheme.dart';
 import 'package:notes/screens/expandnote.dart';
 
 class NoteList extends StatefulWidget {
-  NoteList({Key key}) : super(key: key);
+  final String category;
+  NoteList(this.category);
 
   @override
-  _NoteListState createState() => _NoteListState();
+  _NoteListState createState() => _NoteListState(this.category);
 }
 
 class _NoteListState extends State<NoteList> {
+  final category;
+  _NoteListState(this.category);
   DatabaseHelper dbHelper = DatabaseHelper();
   List<Note> noteList;
   int notesCount = 0;
@@ -48,7 +51,8 @@ class _NoteListState extends State<NoteList> {
   void updateListView() {
     final Future<Database> dbFuture = dbHelper.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Note>> noteListFuture = dbHelper.getNoteList();
+      Future<List<Note>> noteListFuture =
+          dbHelper.getNoteListForCategory(this.category);
       noteListFuture.then((noteList) {
         setState(() {
           this.noteList = noteList;
@@ -171,6 +175,7 @@ class _NoteListState extends State<NoteList> {
                           MaterialPageRoute(builder: (context) {
                         return AddNote(Note.withId(
                             noteList[index].id,
+                            noteList[index].category,
                             noteList[index].title,
                             noteList[index].text,
                             noteList[index].date,
@@ -184,8 +189,11 @@ class _NoteListState extends State<NoteList> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return ExpandNote(Note(noteList[index].title,
-                          noteList[index].text, noteList[index].date));
+                      return ExpandNote(Note(
+                          noteList[index].category,
+                          noteList[index].title,
+                          noteList[index].text,
+                          noteList[index].date));
                     }));
                   },
                 ),
@@ -201,7 +209,7 @@ class _NoteListState extends State<NoteList> {
           onPressed: () async {
             final result = await Navigator.push(context,
                 MaterialPageRoute(builder: (context) {
-              return AddNote(Note.withId(null, '', '', ''));
+              return AddNote(Note.withId(null, this.category, '', '', ''));
             }));
             if (result != null) {
               updateListView();
